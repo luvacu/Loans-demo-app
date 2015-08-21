@@ -1,20 +1,21 @@
 //
-//  MasterViewController.m
+//  LVCMasterViewController.m
 //  Loans
 //
 //  Created by Luis Valdés on 21/8/15.
 //  Copyright (c) 2015 Luis Valdés. All rights reserved.
 //
 
-#import "MasterViewController.h"
-#import "DetailViewController.h"
+#import "LVCMasterViewController.h"
+#import "LVCDetailViewController.h"
 
-@interface MasterViewController ()
+@interface LVCMasterViewController ()
 
-@property NSMutableArray *objects;
+@property (strong, nonatomic) NSMutableArray *objects;
+
 @end
 
-@implementation MasterViewController
+@implementation LVCMasterViewController
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -27,16 +28,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.detailViewController = (LVCDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
 - (void)insertNewObject:(id)sender {
@@ -54,7 +49,7 @@
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSDate *object = self.objects[indexPath.row];
-        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
+        LVCDetailViewController *controller = (LVCDetailViewController *)[[segue destinationViewController] topViewController];
         [controller setDetailItem:object];
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         controller.navigationItem.leftItemsSupplementBackButton = YES;
@@ -77,20 +72,6 @@
     NSDate *object = self.objects[indexPath.row];
     cell.textLabel.text = [object description];
     return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.objects removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }
 }
 
 @end

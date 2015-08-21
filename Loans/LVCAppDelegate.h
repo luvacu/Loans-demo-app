@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  LVCAppDelegate.h
 //  Loans
 //
 //  Created by Luis Valdés on 21/8/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface LVCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -1,5 +1,5 @@
 //
-//  DetailViewController.h
+//  LVCDetailViewController.h
 //  Loans
 //
 //  Created by Luis Valdés on 21/8/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailViewController : UIViewController
+@interface LVCDetailViewController : UIViewController
 
 @property (strong, nonatomic) id detailItem;
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
