@@ -6,11 +6,14 @@
 //  Copyright (c) 2015 Luis Valdés. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
+@class LVCLoan;
+
 
 @interface LVCDetailViewController : UIViewController
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) LVCLoan *loan;
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
 @end

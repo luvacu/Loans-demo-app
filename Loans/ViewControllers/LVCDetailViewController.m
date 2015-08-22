@@ -8,11 +8,22 @@
 
 #import "LVCDetailViewController.h"
 #import "LVCLoansRepository.h"
+#import "LVCLoan.h"
+#import "LVCLocation.h"
+#import "LVCImageHelper.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 
 @interface LVCDetailViewController ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *activityText;
+@property (weak, nonatomic) IBOutlet UILabel *locationText;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @end
 
@@ -20,25 +31,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     [self _configureView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [[[LVCLoansRepository sharedRepository] loans] subscribeNext:^(NSArray *loans) {
-        NSLog(@"Success, received loans: %lu", (unsigned long)loans.count);
-    } error:^(NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-}
-
-#pragma mark - Managing the detail item
-
-- (void)setDetailItem:(id)newDetailItem {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
-            
+- (void)setLoan:(LVCLoan *)newLoan {
+    if (_loan != newLoan) {
+        _loan = newLoan;
+        
         // Update the view.
         [self _configureView];
     }
@@ -47,10 +46,26 @@
 #pragma mark - Private methods
 
 - (void)_configureView {
-    // Update the user interface for the detail item.
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+    if (!self.loan || !self.isViewLoaded) {
+        return;
     }
+    NSURL *imageURL = [[LVCImageHelper sharedHelper] URLForImageId:self.loan.imageId withSize:CGRectGetHeight(self.imageView.frame)];
+    [self.imageView setImageWithURL:imageURL placeholderImage:nil];
+    
+    self.titleLabel.text = self.loan.name;
+    self.subtitleLabel.text = self.loan.status;
+    
+    self.activityText.text = [NSString stringWithFormat:@"%@ / %@", self.loan.activity, self.loan.sector];
+    self.locationText.text = self.loan.location.title;
+    
+    [self _addPoint:self.loan.location toMap:self.mapView];
+}
+
+- (void)_addPoint:(id<MKAnnotation>)point toMap:(MKMapView *)mapView {
+    [mapView removeAnnotations:mapView.annotations];
+    [mapView addAnnotation:point];
+    [mapView showAnnotations:mapView.annotations animated:NO];
+    mapView.camera.altitude *= 5; // Zoom out
 }
 
 #pragma mark -

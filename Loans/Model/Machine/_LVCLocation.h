@@ -36,17 +36,17 @@ extern const struct LVCLocationRelationships {
 
 @property (nonatomic, strong) NSNumber* latitude;
 
-@property (atomic) float latitudeValue;
-- (float)latitudeValue;
-- (void)setLatitudeValue:(float)value_;
+@property (atomic) double latitudeValue;
+- (double)latitudeValue;
+- (void)setLatitudeValue:(double)value_;
 
 //- (BOOL)validateLatitude:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* longitude;
 
-@property (atomic) float longitudeValue;
-- (float)longitudeValue;
-- (void)setLongitudeValue:(float)value_;
+@property (atomic) double longitudeValue;
+- (double)longitudeValue;
+- (void)setLongitudeValue:(double)value_;
 
 //- (BOOL)validateLongitude:(id*)value_ error:(NSError**)error_;
 
@@ -71,14 +71,14 @@ extern const struct LVCLocationRelationships {
 - (NSNumber*)primitiveLatitude;
 - (void)setPrimitiveLatitude:(NSNumber*)value;
 
-- (float)primitiveLatitudeValue;
-- (void)setPrimitiveLatitudeValue:(float)value_;
+- (double)primitiveLatitudeValue;
+- (void)setPrimitiveLatitudeValue:(double)value_;
 
 - (NSNumber*)primitiveLongitude;
 - (void)setPrimitiveLongitude:(NSNumber*)value;
 
-- (float)primitiveLongitudeValue;
-- (void)setPrimitiveLongitudeValue:(float)value_;
+- (double)primitiveLongitudeValue;
+- (void)setPrimitiveLongitudeValue:(double)value_;
 
 - (NSString*)primitiveTown;
 - (void)setPrimitiveTown:(NSString*)value;

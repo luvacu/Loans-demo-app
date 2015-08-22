@@ -17,11 +17,17 @@ typedef NS_ENUM(NSUInteger, LVCNetworkProxyHTTPMethod) {
     LVCNetworkProxyHTTPMethodDELETE,
 };
 
+
 @interface LVCNetworkProxy : NSObject
 
 + (instancetype)sharedProxy;
 
-/// @return RACSignal Next: (NSDictionary *)JSON
+/// @abstract Performs a network request on a background thread.
+/// @warning The response event is executed on the main thread.
+///          You may call '- deliverOn:[RACScheduler scheduler]' after the signal
+///          to handle response data on a background thread and, once the data
+///          has been parsed, return to the main thead (e.g. '- deliverOn:[RACScheduler mainThreadScheduler]').
+/// @return RACSignal Next: (NSDictionary *)JSON.
 - (RACSignal *)performRequestWithMethod:(LVCNetworkProxyHTTPMethod)HTTPMethod onRESTPath:(NSString *)path withParams:(NSDictionary *)params;
 
 @end

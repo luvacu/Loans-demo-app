@@ -61,42 +61,42 @@ const struct LVCLocationRelationships LVCLocationRelationships = {
 
 @dynamic latitude;
 
-- (float)latitudeValue {
+- (double)latitudeValue {
 	NSNumber *result = [self latitude];
-	return [result floatValue];
+	return [result doubleValue];
 }
 
-- (void)setLatitudeValue:(float)value_ {
-	[self setLatitude:[NSNumber numberWithFloat:value_]];
+- (void)setLatitudeValue:(double)value_ {
+	[self setLatitude:[NSNumber numberWithDouble:value_]];
 }
 
-- (float)primitiveLatitudeValue {
+- (double)primitiveLatitudeValue {
 	NSNumber *result = [self primitiveLatitude];
-	return [result floatValue];
+	return [result doubleValue];
 }
 
-- (void)setPrimitiveLatitudeValue:(float)value_ {
-	[self setPrimitiveLatitude:[NSNumber numberWithFloat:value_]];
+- (void)setPrimitiveLatitudeValue:(double)value_ {
+	[self setPrimitiveLatitude:[NSNumber numberWithDouble:value_]];
 }
 
 @dynamic longitude;
 
-- (float)longitudeValue {
+- (double)longitudeValue {
 	NSNumber *result = [self longitude];
-	return [result floatValue];
+	return [result doubleValue];
 }
 
-- (void)setLongitudeValue:(float)value_ {
-	[self setLongitude:[NSNumber numberWithFloat:value_]];
+- (void)setLongitudeValue:(double)value_ {
+	[self setLongitude:[NSNumber numberWithDouble:value_]];
 }
 
-- (float)primitiveLongitudeValue {
+- (double)primitiveLongitudeValue {
 	NSNumber *result = [self primitiveLongitude];
-	return [result floatValue];
+	return [result doubleValue];
 }
 
-- (void)setPrimitiveLongitudeValue:(float)value_ {
-	[self setPrimitiveLongitude:[NSNumber numberWithFloat:value_]];
+- (void)setPrimitiveLongitudeValue:(double)value_ {
+	[self setPrimitiveLongitude:[NSNumber numberWithDouble:value_]];
 }
 
 @dynamic town;

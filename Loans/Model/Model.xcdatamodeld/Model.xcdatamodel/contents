@@ -3,6 +3,11 @@
     <entity name="Loan" representedClassName="LVCLoan" syncable="YES">
         <attribute name="activity" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="imageId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="mappedKeyName" value="image.id"/>
+            </userInfo>
+        </attribute>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="sector" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
@@ -10,14 +15,18 @@
     </entity>
     <entity name="Location" representedClassName="LVCLocation" syncable="YES">
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="countryCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="countryCode" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="mappedKeyName" value="country_code"/>
+            </userInfo>
+        </attribute>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="town" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="loan" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Loan" inverseName="location" inverseEntity="Loan" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Loan" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="Loan" positionX="-63" positionY="-18" width="128" height="150"/>
         <element name="Location" positionX="-54" positionY="27" width="128" height="135"/>
     </elements>
 </model>

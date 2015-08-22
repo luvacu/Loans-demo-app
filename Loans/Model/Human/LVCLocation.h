@@ -1,5 +1,8 @@
+
 #import "_LVCLocation.h"
 
-@interface LVCLocation : _LVCLocation {}
+@import MapKit;
+
+@interface LVCLocation : _LVCLocation <MKAnnotation> {}
 // Custom logic goes here.
 @end

@@ -27,6 +27,8 @@
 		A0B0AFBD1B87BC29009145A5 /* LVCDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B0AFB91B87BC29009145A5 /* LVCDatabaseManager.m */; };
 		A0B0AFBE1B87BC29009145A5 /* LVCNetworkProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B0AFBC1B87BC29009145A5 /* LVCNetworkProxy.m */; };
 		A0B0AFC01B87C40A009145A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B0AFBF1B87C40A009145A5 /* MapKit.framework */; };
+		A0B0AFC31B88C6D2009145A5 /* LVCLoanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B0AFC21B88C6D2009145A5 /* LVCLoanTableViewCell.m */; };
+		A0B0AFC71B88E77B009145A5 /* LVCImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B0AFC61B88E77B009145A5 /* LVCImageHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,10 @@
 		A0B0AFBB1B87BC29009145A5 /* LVCNetworkProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVCNetworkProxy.h; sourceTree = "<group>"; };
 		A0B0AFBC1B87BC29009145A5 /* LVCNetworkProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVCNetworkProxy.m; sourceTree = "<group>"; };
 		A0B0AFBF1B87C40A009145A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A0B0AFC11B88C6D2009145A5 /* LVCLoanTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVCLoanTableViewCell.h; sourceTree = "<group>"; };
+		A0B0AFC21B88C6D2009145A5 /* LVCLoanTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVCLoanTableViewCell.m; sourceTree = "<group>"; };
+		A0B0AFC51B88E77B009145A5 /* LVCImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVCImageHelper.h; sourceTree = "<group>"; };
+		A0B0AFC61B88E77B009145A5 /* LVCImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVCImageHelper.m; sourceTree = "<group>"; };
 		B2EC84D6E4BFBC969A85B10A /* Pods-Loans.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Loans.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Loans/Pods-Loans.debug.xcconfig"; sourceTree = "<group>"; };
 		E30E3CC2E15B8258299B0F49 /* Pods-LoansTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoansTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LoansTests/Pods-LoansTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,6 +147,7 @@
 				A0AD6A9B1B87929D00DD8CE0 /* ViewControllers */,
 				A0B0AF991B8799A6009145A5 /* Model */,
 				A0AD6A9A1B87929D00DD8CE0 /* Services */,
+				A0B0AFC41B88E729009145A5 /* Utils */,
 				A0AD6A7D1B878EF000DD8CE0 /* Main.storyboard */,
 				A0AD6A801B878EF000DD8CE0 /* Images.xcassets */,
 				A0AD6A821B878EF000DD8CE0 /* LaunchScreen.xib */,
@@ -193,6 +200,8 @@
 				A0AD6A9F1B87929D00DD8CE0 /* LVCMasterViewController.m */,
 				A0AD6A9C1B87929D00DD8CE0 /* LVCDetailViewController.h */,
 				A0AD6A9D1B87929D00DD8CE0 /* LVCDetailViewController.m */,
+				A0B0AFC11B88C6D2009145A5 /* LVCLoanTableViewCell.h */,
+				A0B0AFC21B88C6D2009145A5 /* LVCLoanTableViewCell.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -256,6 +265,15 @@
 				A0B0AFBC1B87BC29009145A5 /* LVCNetworkProxy.m */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		A0B0AFC41B88E729009145A5 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A0B0AFC51B88E77B009145A5 /* LVCImageHelper.h */,
+				A0B0AFC61B88E77B009145A5 /* LVCImageHelper.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -427,9 +445,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0B0AFA81B879E3E009145A5 /* LVCLocation.m in Sources */,
+				A0B0AFC71B88E77B009145A5 /* LVCImageHelper.m in Sources */,
 				A0AD6AA11B87929D00DD8CE0 /* LVCMasterViewController.m in Sources */,
 				A0B0AFAA1B879E3E009145A5 /* _LVCLocation.m in Sources */,
 				A0AD6A761B878EF000DD8CE0 /* LVCAppDelegate.m in Sources */,
+				A0B0AFC31B88C6D2009145A5 /* LVCLoanTableViewCell.m in Sources */,
 				A0B0AFA91B879E3E009145A5 /* _LVCLoan.m in Sources */,
 				A0B0AFB61B87BC03009145A5 /* LVCLoansRepository.m in Sources */,
 				A0B0AF9C1B8799FF009145A5 /* Model.xcdatamodeld in Sources */,

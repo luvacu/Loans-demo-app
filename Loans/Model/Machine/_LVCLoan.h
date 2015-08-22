@@ -6,6 +6,7 @@
 extern const struct LVCLoanAttributes {
 	__unsafe_unretained NSString *activity;
 	__unsafe_unretained NSString *id;
+	__unsafe_unretained NSString *imageId;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *sector;
 	__unsafe_unretained NSString *status;
@@ -38,6 +39,14 @@ extern const struct LVCLoanRelationships {
 
 //- (BOOL)validateId:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSNumber* imageId;
+
+@property (atomic) int64_t imageIdValue;
+- (int64_t)imageIdValue;
+- (void)setImageIdValue:(int64_t)value_;
+
+//- (BOOL)validateImageId:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSString* name;
 
 //- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
@@ -66,6 +75,12 @@ extern const struct LVCLoanRelationships {
 
 - (int64_t)primitiveIdValue;
 - (void)setPrimitiveIdValue:(int64_t)value_;
+
+- (NSNumber*)primitiveImageId;
+- (void)setPrimitiveImageId:(NSNumber*)value;
+
+- (int64_t)primitiveImageIdValue;
+- (void)setPrimitiveImageIdValue:(int64_t)value_;
 
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;

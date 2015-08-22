@@ -10,14 +10,19 @@
 
 @class RACSignal;
 
+
 @interface LVCDatabaseManager : NSObject
 
 + (instancetype)sharedManager;
 
-/// @abstract Performs import on the current calling thread.
-- (RACSignal *)storeLoans:(NSArray *)array;
+/// @abstract Creates and stores new Loans from array of NSDictionary.
+/// @warning Performs import on a background thread.
+/// @return RACSignal Completed or Error
+- (RACSignal *)importLoans:(NSArray *)array;
 
-/// @abstract Performs a fetch on the current calling thread.
+/// @abstract Retrieves all loans stored in DB.
+/// @warning Performs a fetch on the current calling thread.
+/// @return RACSignal Next: (NSArray<LVCLoan *> *)loans.
 - (RACSignal *)loans;
 
 @end

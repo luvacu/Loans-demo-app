@@ -16,7 +16,7 @@
 
 NSString * const LVCNetworkProxyErrorDomain = @"es.valdes.luis.services.network.proxy.error";
 
-NSString *LVCNetworkProxyHTTPMethodToString(LVCNetworkProxyHTTPMethod method) {
+NSString *NSStringFromLVCNetworkProxyHTTPMethod(LVCNetworkProxyHTTPMethod method) {
     NSDictionary *methodDictionary = @{@(LVCNetworkProxyHTTPMethodGET):      @"GET",
                                        @(LVCNetworkProxyHTTPMethodPOST):     @"POST",
                                        @(LVCNetworkProxyHTTPMethodPUT):      @"PUT",
@@ -43,48 +43,37 @@ NSString *LVCNetworkProxyHTTPMethodToString(LVCNetworkProxyHTTPMethod method) {
     return _sharedProxy;
 }
 
-/// @return RACSignal Next: (NSDictionary *)JSON
+/// @return RACSignal Next: (NSDictionary *)JSON.
 - (RACSignal *)performRequestWithMethod:(LVCNetworkProxyHTTPMethod)HTTPMethod onRESTPath:(NSString *)path withParams:(NSDictionary *)params {
     // Sanitize path string
     path = [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     @weakify(self)
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        // Success block
-        void (^success)(NSURLSessionDataTask *task, id responseObject) = ^void(NSURLSessionDataTask *task, id responseObject) {
-            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            if (response.statusCode == 200 && responseObject && [responseObject isKindOfClass:NSDictionary.class]) {
-                NSDictionary *json = responseObject;
-                NSLog(@"%@: %@ | Params: %@. JSON received: %@", LVCNetworkProxyHTTPMethodToString(HTTPMethod), path, params, json);
-                [subscriber sendNext:json];
-                [subscriber sendCompleted];
-            } else {
-                NSError *error = [LVCNetworkProxy _errorWithLocalizedDescription:
-                                  @"No response object found, unexpected format, or invalid request"];
-                [subscriber sendError:error];
-            }
-        };
+        @strongify(self)
         
+        // Success block
+        void (^successBlock)(NSURLSessionDataTask *task, id responseObject) = [self _buildSuccessBlockWithMethod:HTTPMethod
+                                                                                                            path:path
+                                                                                                          params:params
+                                                                                                      subscriber:subscriber];
         // Failure block
-        void (^failure)(NSURLSessionDataTask *task, NSError *error) = ^void(NSURLSessionDataTask *task, NSError *error) {
-            [subscriber sendError:error];
-        };
+        void (^failureBlock)(NSURLSessionDataTask *task, NSError *error) = [self _buildFailureBlockWithSubscriber:subscriber];
         
         // Launch network request depending on HTTP method
-        @strongify(self)
         NSURLSessionDataTask *task;
         switch (HTTPMethod) {
             case LVCNetworkProxyHTTPMethodGET:
-                task = [self.sessionManager GET:path parameters:params success:success failure:failure];
+                task = [self.sessionManager GET:path parameters:params success:successBlock failure:failureBlock];
                 break;
             case LVCNetworkProxyHTTPMethodPOST:
-                task = [self.sessionManager POST:path parameters:params success:success failure:failure];
+                task = [self.sessionManager POST:path parameters:params success:successBlock failure:failureBlock];
                 break;
             case LVCNetworkProxyHTTPMethodPUT:
-                task = [self.sessionManager PUT:path parameters:params success:success failure:failure];
+                task = [self.sessionManager PUT:path parameters:params success:successBlock failure:failureBlock];
                 break;
             case LVCNetworkProxyHTTPMethodDELETE:
-                task = [self.sessionManager DELETE:path parameters:params success:success failure:failure];
+                task = [self.sessionManager DELETE:path parameters:params success:successBlock failure:failureBlock];
                 break;
                 
             default:
@@ -100,9 +89,10 @@ NSString *LVCNetworkProxyHTTPMethodToString(LVCNetworkProxyHTTPMethod method) {
     }];
     return [[[signal
               doError:^(NSError *error) {
-                  NSLog(@"Error performing %@ on REST path '%@' | Params: %@. Error: %@", LVCNetworkProxyHTTPMethodToString(HTTPMethod), path, params, error);
+                  NSLog(@"Error performing %@ on REST path '%@' | Params: %@. Error: %@",
+                        NSStringFromLVCNetworkProxyHTTPMethod(HTTPMethod), path, params, error);
               }]
-             publish] autoconnect];
+              publish] autoconnect];
     /**
      * '[signal publish]' returns a RACMulitcastConnection
      * that will prevent executing the signal's block for each new subscriber.
@@ -135,6 +125,31 @@ NSString *LVCNetworkProxyHTTPMethodToString(LVCNetworkProxyHTTPMethod method) {
     return [NSError errorWithDomain:LVCNetworkProxyErrorDomain
                                code:0
                            userInfo:@{ NSLocalizedDescriptionKey: localizedDescription }];
+}
+
+- (void (^)(NSURLSessionDataTask *task, id responseObject))_buildSuccessBlockWithMethod:(LVCNetworkProxyHTTPMethod)HTTPMethod
+                                                                                   path:(NSString *)path
+                                                                                 params:(NSDictionary *)params
+                                                                             subscriber:(id<RACSubscriber>)subscriber {
+    return ^void(NSURLSessionDataTask *task, id responseObject) {
+        NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+        if (response.statusCode == 200 && responseObject && [responseObject isKindOfClass:NSDictionary.class]) {
+            NSDictionary *json = responseObject;
+//            NSLog(@"%@: %@ | Params: %@. JSON received: %@", NSStringFromLVCNetworkProxyHTTPMethod(HTTPMethod), path, params, json);
+            [subscriber sendNext:json];
+            [subscriber sendCompleted];
+        } else {
+            NSError *error = [LVCNetworkProxy _errorWithLocalizedDescription:
+                              @"No response object found, unexpected format, or invalid request"];
+            [subscriber sendError:error];
+        }
+    };
+}
+
+- (void (^)(NSURLSessionDataTask *task, NSError *error))_buildFailureBlockWithSubscriber:(id<RACSubscriber>)subscriber {
+    return ^void(NSURLSessionDataTask *task, NSError *error) {
+        [subscriber sendError:error];
+    };
 }
 
 #pragma mark -

@@ -26,17 +26,28 @@
     return _sharedManager;
 }
 
-- (RACSignal *)storeLoans:(NSArray *)array {
+/// @return RACSignal Completed or Error
+- (RACSignal *)importLoans:(NSArray *)array {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSArray *importedLoans = [LVCLoan MR_importFromArray:array];
-        [subscriber sendCompleted];
+        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+            NSArray *importedLoans = [LVCLoan MR_importFromArray:array inContext:localContext];
+            NSLog(@"Imported %lu loans in DB.", importedLoans.count);
+        } completion:^(BOOL contextDidSave, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+                return ;
+            }
+            [subscriber sendCompleted];
+        }];
         return nil;
     }];
 }
 
+/// @return RACSignal Next: (NSArray<LVCLoan *> *)loans.
 - (RACSignal *)loans {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSArray *loans = [LVCLoan MR_findAll];
+        NSLog(@"Found %lu loans in DB.", loans.count);
         [subscriber sendNext:loans];
         [subscriber sendCompleted];
         return nil;

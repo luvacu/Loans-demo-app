@@ -32,33 +32,18 @@
     return _sharedRepository;
 }
 
+/// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
 - (RACSignal *)loans {
-#warning Externalize path
-    NSString *path = @"v1/loans/search.json";
-    NSDictionary *params = @{@"status": @"fundraising"};
-    
     @weakify(self)
-    return [[[[[[self.networkProxy performRequestWithMethod:LVCNetworkProxyHTTPMethodGET onRESTPath:path withParams:params]
-              subscribeOn:[RACScheduler scheduler]]
-              deliverOn:[RACScheduler scheduler]]
-              flattenMap:^RACStream *(NSDictionary *JSON) {
-                  id loans = JSON[@"loans"];
-                  
-                  NSArray *loansArray = nil;
-                  if ([loans isKindOfClass:NSArray.class]) {
-                       loansArray = loans; // Array with multiple objects
-                  } else if ([loans isKindOfClass:NSDictionary.class]) {
-                      loansArray = @[loans]; // Array with a single object
-                  }
-                  
-                  @strongify(self)
-                  return [self.databaseManager storeLoans:loansArray];
-              }]
-    deliverOn:[RACScheduler scheduler]]
-    then:^RACSignal *{
-        @strongify(self)
-        return [self.databaseManager loans];
-    }];
+    return [[self _fetchAllLoans]
+             flattenMap:^RACStream *(NSArray *loans) {
+                 if (!loans || loans.count == 0) {
+                     NSLog(@"No loans in DB. Download from server.");
+                     @strongify(self)
+                     return [self _populateLoansDatabaseAndFetch];
+                 }
+                 return [RACSignal return:loans];
+             }];
 }
 
 #pragma mark - Private methods
@@ -69,6 +54,53 @@
         self.databaseManager = [LVCDatabaseManager sharedManager];
     }
     return self;
+}
+
+/// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
+- (RACSignal *)_populateLoansDatabaseAndFetch {
+    @weakify(self)
+    return [[[[self _downloadLoans] // Download and import will be performed on a background thread
+              flattenMap:^RACStream *(NSArray *rawLoans) {
+                  @strongify(self)
+                  return [self _importLoans:rawLoans];
+              }]
+              deliverOn:[RACScheduler mainThreadScheduler]] // Fetch will be performed on the main thread
+              then:^RACSignal *{
+                  @strongify(self)
+                  return [self _fetchAllLoans];
+              }];
+}
+
+/// @return RACSignal Next: (NSArray<NSDictionary *> *)loansArray.
+- (RACSignal *)_downloadLoans {
+#warning Externalize path
+    NSString *path = @"v1/loans/search.json";
+    NSDictionary *params = @{@"status": @"fundraising"};
+    
+    return [[[[self.networkProxy performRequestWithMethod:LVCNetworkProxyHTTPMethodGET onRESTPath:path withParams:params]
+              subscribeOn:[RACScheduler scheduler]]
+              deliverOn:[RACScheduler scheduler]]
+              flattenMap:^RACStream *(NSDictionary *JSON) {
+                  id loans = JSON[@"loans"];
+                  
+                  NSArray *loansArray = nil;
+                  if ([loans isKindOfClass:NSArray.class]) {
+                      loansArray = loans; // Array with multiple objects
+                  } else if ([loans isKindOfClass:NSDictionary.class]) {
+                      loansArray = @[loans]; // Array with a single object
+                  }
+                  return [RACSignal return:loansArray];
+              }];
+}
+
+/// @return RACSignal Next: (NSArray<ObjectIDs *> *)imported loans Object IDs array.
+- (RACSignal *)_importLoans:(NSArray *)loans {
+    return [self.databaseManager importLoans:loans];
+}
+
+/// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
+- (RACSignal *)_fetchAllLoans {
+    return [self.databaseManager loans];
 }
 
 #pragma mark -

@@ -14,6 +14,7 @@
 
 + (instancetype)sharedRepository;
 
+/// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
 - (RACSignal *)loans;
 
 @end

@@ -6,6 +6,7 @@
 const struct LVCLoanAttributes LVCLoanAttributes = {
 	.activity = @"activity",
 	.id = @"id",
+	.imageId = @"imageId",
 	.name = @"name",
 	.sector = @"sector",
 	.status = @"status",
@@ -46,6 +47,11 @@ const struct LVCLoanRelationships LVCLoanRelationships = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"imageIdValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"imageId"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -70,6 +76,26 @@ const struct LVCLoanRelationships LVCLoanRelationships = {
 
 - (void)setPrimitiveIdValue:(int64_t)value_ {
 	[self setPrimitiveId:[NSNumber numberWithLongLong:value_]];
+}
+
+@dynamic imageId;
+
+- (int64_t)imageIdValue {
+	NSNumber *result = [self imageId];
+	return [result longLongValue];
+}
+
+- (void)setImageIdValue:(int64_t)value_ {
+	[self setImageId:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveImageIdValue {
+	NSNumber *result = [self primitiveImageId];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveImageIdValue:(int64_t)value_ {
+	[self setPrimitiveImageId:[NSNumber numberWithLongLong:value_]];
 }
 
 @dynamic name;

@@ -13,6 +13,12 @@ If you change the CoreData model, remember to run the following command on ./Loa
 mogenerator -m Model.xcdatamodeld/ -M ./Machine/ -H ./Human/ --template-var arc=true
 
 
+## Tools & Libraries used
+
+...
+mogenerator 1.29
+
+
 ## Author
 
 Luis Valdés Cuesta

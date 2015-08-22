@@ -2,7 +2,7 @@
 platform :ios, '8.0'
 
 target 'Loans' do
-    pod 'ReactiveCocoa', '2.5'
+    pod 'ReactiveCocoa', '~> 2.5'
     pod 'AFNetworking', '~> 2.6'
     pod 'MagicalRecord', '~> 2.3'
 end
