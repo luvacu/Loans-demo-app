@@ -72,12 +72,16 @@
 #pragma mark - Private methods
 
 - (void)_fetchLoans {
+    if (!self.repository) {
+        return;
+    }
+    
     [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:240/255.f green:240/255.f blue:240/255.f alpha:1]];
     [SVProgressHUD setForegroundColor:[UIColor colorWithRed:49/255.f green:170/255.f blue:57/255.f alpha:1]];
     [SVProgressHUD show];
     
     @weakify(self)
-    [[[LVCLoansRepository sharedRepository] loans]
+    [[self.repository loans]
      subscribeNext:^(NSArray *loans) {
          NSLog(@"Loans read from repository: %lu", (unsigned long)loans.count);
          [SVProgressHUD showSuccessWithStatus:nil];

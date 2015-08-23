@@ -35,13 +35,19 @@ NSString *NSStringFromLVCNetworkProxyHTTPMethod(LVCNetworkProxyHTTPMethod method
 
 #pragma mark - Public API
 
-+ (instancetype)sharedProxy {
-    static id _sharedProxy = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedProxy = [[[self class] alloc] init];
-    });
-    return _sharedProxy;
++ (instancetype)defaultProxy {
+    NSURL *url = [NSURL URLWithString:[LVCConstantsManager APIEndPoint]];
+    AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:url];
+    
+    return [[self alloc] initWithAFHTTPSessionManager:sessionManager];
+}
+
+- (instancetype)initWithAFHTTPSessionManager:(AFHTTPSessionManager *)sessionManager {
+    if (self = [super init]) {
+        self.sessionManager = sessionManager;
+        [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    }
+    return self;
 }
 
 /// @return RACSignal Next: (NSDictionary *)JSON.
@@ -107,19 +113,6 @@ NSString *NSStringFromLVCNetworkProxyHTTPMethod(LVCNetworkProxyHTTPMethod method
 }
 
 #pragma mark - Private methods
-
-- (instancetype)init {
-    if (self = [super init]) {
-        [self _initSessionManager];
-        [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-    }
-    return self;
-}
-
-- (void)_initSessionManager {
-    NSURL *url = [NSURL URLWithString:[LVCConstantsManager APIEndPoint]];
-    self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:url];
-}
 
 + (NSError *)_errorWithLocalizedDescription:(NSString *)localizedDescription {
     return [NSError errorWithDomain:LVCNetworkProxyErrorDomain

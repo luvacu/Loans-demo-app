@@ -8,6 +8,7 @@
 
 @import Foundation;
 
+@class AFHTTPSessionManager;
 @class RACSignal;
 
 typedef NS_ENUM(NSUInteger, LVCNetworkProxyHTTPMethod) {
@@ -20,7 +21,12 @@ typedef NS_ENUM(NSUInteger, LVCNetworkProxyHTTPMethod) {
 
 @interface LVCNetworkProxy : NSObject
 
-+ (instancetype)sharedProxy;
+
+/// @abstract Builds a LVCNetworkProxy with the default configuration.
++ (instancetype)defaultProxy;
+
+/// @abstract For customization or testing purposes. Use convenience initializer '+ defaultProxy' for default configuration.
+- (instancetype)initWithAFHTTPSessionManager:(AFHTTPSessionManager *)sessionManager;
 
 /// @abstract Performs a network request on a background thread.
 /// @warning The response event is executed on the main thread.

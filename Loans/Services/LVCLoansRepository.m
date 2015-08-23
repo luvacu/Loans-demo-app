@@ -24,13 +24,19 @@
 
 #pragma mark - Public API
 
-+ (instancetype)sharedRepository {
-    static id _sharedRepository = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedRepository = [[[self class] alloc] init];
-    });
-    return _sharedRepository;
++ (instancetype)defaultRepository {
+    LVCNetworkProxy *networkProxy = [LVCNetworkProxy defaultProxy];
+    LVCDatabaseManager *databaseManager = [LVCDatabaseManager sharedManager];
+    
+    return [[self alloc] initWithNetworkProxy:networkProxy databaseManager:databaseManager];
+}
+
+- (instancetype)initWithNetworkProxy:(LVCNetworkProxy *)networkProxy databaseManager:(LVCDatabaseManager *)databaseManager {
+    if (self = [super init]) {
+        self.networkProxy = networkProxy;
+        self.databaseManager = databaseManager;
+    }
+    return self;
 }
 
 /// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
@@ -48,14 +54,6 @@
 }
 
 #pragma mark - Private methods
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.networkProxy = [LVCNetworkProxy sharedProxy];
-        self.databaseManager = [LVCDatabaseManager sharedManager];
-    }
-    return self;
-}
 
 /// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
 - (RACSignal *)_populateLoansDatabaseAndFetch {
@@ -93,7 +91,7 @@
               }];
 }
 
-/// @return RACSignal Next: (NSArray<ObjectIDs *> *)imported loans Object IDs array.
+/// @return RACSignal Completed or Error
 - (RACSignal *)_importLoans:(NSArray *)loans {
     return [self.databaseManager importLoans:loans];
 }

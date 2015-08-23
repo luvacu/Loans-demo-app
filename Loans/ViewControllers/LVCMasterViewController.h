@@ -6,12 +6,14 @@
 //  Copyright (c) 2015 Luis Valdés. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
+@class LVCLoansRepository;
 @class LVCDetailViewController;
 
 @interface LVCMasterViewController : UITableViewController
 
+@property (strong, nonatomic) LVCLoansRepository *repository;
 @property (strong, nonatomic) LVCDetailViewController *detailViewController;
 
 

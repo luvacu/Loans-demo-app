@@ -7,9 +7,10 @@
 //
 
 #import "LVCDetailViewController.h"
-#import "LVCLoansRepository.h"
+
 #import "LVCLoan.h"
 #import "LVCLocation.h"
+
 #import "LVCImageHelper.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>

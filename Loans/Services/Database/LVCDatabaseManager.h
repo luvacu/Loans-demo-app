@@ -13,6 +13,7 @@
 
 @interface LVCDatabaseManager : NSObject
 
+/// @abstract Singleton
 + (instancetype)sharedManager;
 
 /// @abstract Creates and stores new Loans from array of NSDictionary.

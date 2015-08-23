@@ -8,11 +8,18 @@
 
 @import Foundation;
 
+@class LVCNetworkProxy;
+@class LVCDatabaseManager;
+
 @class RACSignal;
 
 @interface LVCLoansRepository : NSObject
 
-+ (instancetype)sharedRepository;
+/// @abstract Builds a LVCLoansRepository with the default configuration.
++ (instancetype)defaultRepository;
+
+/// @abstract For customization or testing purposes. Use convenience initializer '+ defaultRepository' for default configuration.
+- (instancetype)initWithNetworkProxy:(LVCNetworkProxy *)networkProxy databaseManager:(LVCDatabaseManager *)databaseManager;
 
 /// @return RACSignal Next: (NSArray<LVCLoan *> *)loans array from DB.
 - (RACSignal *)loans;

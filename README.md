@@ -1,15 +1,22 @@
 # Loans demo app
 Loans demo app for iPhone & iPad (iOS 8+).
 
+![screenshot_1](https://raw.githubusercontent.com/luvacu/Loans-demo-app/master/screenshots/1.png)
+![screenshot_2](https://raw.githubusercontent.com/luvacu/Loans-demo-app/master/screenshots/2.png)
+![screenshot_3](https://raw.githubusercontent.com/luvacu/Loans-demo-app/master/screenshots/3.png)
+![screenshot_4](https://raw.githubusercontent.com/luvacu/Loans-demo-app/master/screenshots/4.png)
+![screenshot_5](https://raw.githubusercontent.com/luvacu/Loans-demo-app/master/screenshots/5.png)
+
 ## Usage
-- Clone the repo
+- Clone the repo.
 - Run `pod install` from project directory.
-- Open project Loans.xcworkspace
+- Open workspace file `Loans.xcworkspace`.
 
 If you change the CoreData model, remember to run the following command on `./Loans/Model` directory:
 
 `mogenerator -m Model.xcdatamodeld/ -M ./Machine/ -H ./Human/ --template-var arc=true`
 
+**Note**: In `LVCAppDelegate`, at app launch, the object graph in injected to `LVCMasterViewController`. You can override the default implementation of `LVCLoansRepository` or any dependencies to customize the behavior. See `LVCAppDelegate`'s method `- _loadComponents:` for further details.
 
 ## Tools/Libraries/SDKs used
 #### Views
