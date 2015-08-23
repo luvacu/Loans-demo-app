@@ -14,9 +14,11 @@
 #import "LVCLoan.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 
 
-@interface LVCMasterViewController ()
+@interface LVCMasterViewController () <DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (strong, nonatomic) NSMutableArray *loans;
 
@@ -28,15 +30,16 @@
     [super awakeFromNib];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         self.clearsSelectionOnViewWillAppear = NO;
-//        self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
-    
-    [self _fetchLoans];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    if ([self _isFirstRun]) {
+        [self _showEmptyView];
+    } else {
+        [self _fetchLoans];
+    }
     self.detailViewController = (LVCDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
@@ -66,28 +69,25 @@
     return cell;
 }
 
-//#pragma mark - UITableViewDelegate
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    LVCLoan *selectedLoan = self.loans[indexPath.row];
-//    LVCDetailViewController *controller = (LVCDetailViewController *)[[segue destinationViewController] topViewController];
-//    controller.loan = selectedLoan;
-//    
-//    controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-//    controller.navigationItem.leftItemsSupplementBackButton = YES;
-//}
-
 #pragma mark - Private methods
 
 - (void)_fetchLoans {
+    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:240/255.f green:240/255.f blue:240/255.f alpha:1]];
+    [SVProgressHUD setForegroundColor:[UIColor colorWithRed:49/255.f green:170/255.f blue:57/255.f alpha:1]];
+    [SVProgressHUD show];
+    
     @weakify(self)
     [[[LVCLoansRepository sharedRepository] loans]
      subscribeNext:^(NSArray *loans) {
          NSLog(@"Loans read from repository: %lu", (unsigned long)loans.count);
+         [SVProgressHUD showSuccessWithStatus:nil];
+         
          @strongify(self)
+         [self _hideEmptyView];
          [self _addLoans:loans];
      } error:^(NSError *error) {
          NSLog(@"Error: %@", error);
+         [SVProgressHUD showErrorWithStatus:@"An error occurred, please try again later"];
      }];
 }
 
@@ -104,6 +104,52 @@
         [indexPaths addObject:indexPath];
     }
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (BOOL)_isFirstRun {
+    BOOL firstRun = NO;
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FirstRun"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"FirstRun"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        firstRun = YES;
+    }
+    return firstRun;
+}
+
+- (void)_showEmptyView {
+    self.tableView.emptyDataSetSource = self;
+    self.tableView.emptyDataSetDelegate = self;
+    // Remove cell separators
+    self.tableView.tableFooterView = [UIView new];
+}
+
+- (void)_hideEmptyView {
+    self.tableView.emptyDataSetSource = nil;
+    self.tableView.emptyDataSetSource = nil;
+}
+
+#pragma mark - DZNEmptyDataSetSource
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    return [UIImage imageNamed:@"cash"];
+}
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
+    NSString *text = @"No loans yet";
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor colorWithRed:182/255.f green:182/255.f blue:182/255.f alpha:1]};
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView {
+    NSString *text = @"Tap to load them from server";
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor colorWithRed:190/255.f green:190/255.f blue:190/255.f alpha:1]};
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+#pragma mark - DZNEmptyDataSetDelegate
+
+- (void)emptyDataSetDidTapView:(UIScrollView *)scrollView {
+    [self _fetchLoans];
 }
 
 #pragma mark -

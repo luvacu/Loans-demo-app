@@ -1,39 +1,3 @@
-# Loans demo app
-Loans demo app for iPhone & iPad (iOS 8+).
-
-## Usage
-- Clone the repo
-- Run `pod install` from project directory.
-- Open project Loans.xcworkspace
-
-If you change the CoreData model, remember to run the following command on `./Loans/Model` directory:
-
-`mogenerator -m Model.xcdatamodeld/ -M ./Machine/ -H ./Human/ --template-var arc=true`
-
-
-## Tools/Libraries/SDKs used
-#### Views
-- MapKit
-- [DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)
-- [SVProgressHUD](https://github.com/TransitApp/SVProgressHUD)
-
-#### Persistence
-- CoreData
-- [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
-- [mogenerator](https://github.com/rentzsch/mogenerator)
-
-#### Networking
-- [AFNetworking](https://github.com/AFNetworking/AFNetworking)
-
-#### Others
-- [ReactiveCocoa 2.5](https://github.com/ReactiveCocoa/ReactiveCocoa)
-
-## Author
-Luis Valdés Cuesta
-
-[luis (DOT) valdes (DOT) cuesta (AT) gmail.com]()
-
-## License
 (The MIT License)
 
 Copyright (c) 2015 Luis Valdés Cuesta

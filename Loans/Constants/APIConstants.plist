@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>APIEndPoint</key>
+	<string>http://api.kivaws.org/</string>
+	<key>APIPaths</key>
+	<dict>
+		<key>APIPathLoansSearch</key>
+		<string>v1/loans/search.json</string>
+	</dict>
+	<key>ImagesEndPoint</key>
+	<string>http://www.kiva.org/</string>
+	<key>ImagesPaths</key>
+	<dict>
+		<key>ImagePath</key>
+		<string>img/%@/%@.jpg</string>
+	</dict>
+</dict>
+</plist>

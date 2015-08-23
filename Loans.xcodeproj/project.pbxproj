@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		393EFFFF7010FD6379D867DB /* libPods-LoansTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FACFA67633CEFA2BD1BF5C0 /* libPods-LoansTests.a */; };
 		3F15FF517E933415F4B78A72 /* libPods-Loans.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21C9602B5ADE8B71DCB78571 /* libPods-Loans.a */; };
+		A096191D1B8A202500DCA55F /* APIConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = A09619181B8A202500DCA55F /* APIConstants.plist */; };
+		A096191E1B8A202500DCA55F /* LVCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A096191A1B8A202500DCA55F /* LVCConstants.m */; };
+		A096191F1B8A202500DCA55F /* LVCConstantsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A096191C1B8A202500DCA55F /* LVCConstantsManager.m */; };
 		A0AD6A731B878EF000DD8CE0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AD6A721B878EF000DD8CE0 /* main.m */; };
 		A0AD6A761B878EF000DD8CE0 /* LVCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AD6A751B878EF000DD8CE0 /* LVCAppDelegate.m */; };
 		A0AD6A7F1B878EF000DD8CE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0AD6A7D1B878EF000DD8CE0 /* Main.storyboard */; };
@@ -46,6 +49,11 @@
 		21C9602B5ADE8B71DCB78571 /* libPods-Loans.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Loans.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D534D7D74E6B601DFB99CE6 /* Pods-LoansTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoansTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LoansTests/Pods-LoansTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9AE2774FC4A5E98B37249164 /* Pods-Loans.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Loans.release.xcconfig"; path = "Pods/Target Support Files/Pods-Loans/Pods-Loans.release.xcconfig"; sourceTree = "<group>"; };
+		A09619181B8A202500DCA55F /* APIConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = APIConstants.plist; sourceTree = "<group>"; };
+		A09619191B8A202500DCA55F /* LVCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVCConstants.h; sourceTree = "<group>"; };
+		A096191A1B8A202500DCA55F /* LVCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVCConstants.m; sourceTree = "<group>"; };
+		A096191B1B8A202500DCA55F /* LVCConstantsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVCConstantsManager.h; sourceTree = "<group>"; };
+		A096191C1B8A202500DCA55F /* LVCConstantsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVCConstantsManager.m; sourceTree = "<group>"; };
 		A0AD6A6D1B878EF000DD8CE0 /* Loans.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loans.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0AD6A711B878EF000DD8CE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0AD6A721B878EF000DD8CE0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -119,6 +127,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A09619171B8A202500DCA55F /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				A09619181B8A202500DCA55F /* APIConstants.plist */,
+				A096191B1B8A202500DCA55F /* LVCConstantsManager.h */,
+				A096191C1B8A202500DCA55F /* LVCConstantsManager.m */,
+				A09619191B8A202500DCA55F /* LVCConstants.h */,
+				A096191A1B8A202500DCA55F /* LVCConstants.m */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		A0AD6A641B878EF000DD8CE0 = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +168,7 @@
 				A0B0AF991B8799A6009145A5 /* Model */,
 				A0AD6A9A1B87929D00DD8CE0 /* Services */,
 				A0B0AFC41B88E729009145A5 /* Utils */,
+				A09619171B8A202500DCA55F /* Constants */,
 				A0AD6A7D1B878EF000DD8CE0 /* Main.storyboard */,
 				A0AD6A801B878EF000DD8CE0 /* Images.xcassets */,
 				A0AD6A821B878EF000DD8CE0 /* LaunchScreen.xib */,
@@ -364,6 +385,7 @@
 				A0AD6A7F1B878EF000DD8CE0 /* Main.storyboard in Resources */,
 				A0AD6A841B878EF000DD8CE0 /* LaunchScreen.xib in Resources */,
 				A0AD6A811B878EF000DD8CE0 /* Images.xcassets in Resources */,
+				A096191D1B8A202500DCA55F /* APIConstants.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +468,7 @@
 			files = (
 				A0B0AFA81B879E3E009145A5 /* LVCLocation.m in Sources */,
 				A0B0AFC71B88E77B009145A5 /* LVCImageHelper.m in Sources */,
+				A096191E1B8A202500DCA55F /* LVCConstants.m in Sources */,
 				A0AD6AA11B87929D00DD8CE0 /* LVCMasterViewController.m in Sources */,
 				A0B0AFAA1B879E3E009145A5 /* _LVCLocation.m in Sources */,
 				A0AD6A761B878EF000DD8CE0 /* LVCAppDelegate.m in Sources */,
@@ -456,6 +479,7 @@
 				A0B0AFA71B879E3E009145A5 /* LVCLoan.m in Sources */,
 				A0B0AFBE1B87BC29009145A5 /* LVCNetworkProxy.m in Sources */,
 				A0B0AFBD1B87BC29009145A5 /* LVCDatabaseManager.m in Sources */,
+				A096191F1B8A202500DCA55F /* LVCConstantsManager.m in Sources */,
 				A0AD6AA01B87929D00DD8CE0 /* LVCDetailViewController.m in Sources */,
 				A0AD6A731B878EF000DD8CE0 /* main.m in Sources */,
 			);

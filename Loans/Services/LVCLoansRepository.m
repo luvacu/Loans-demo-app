@@ -9,6 +9,7 @@
 #import "LVCLoansRepository.h"
 #import "LVCNetworkProxy.h"
 #import "LVCDatabaseManager.h"
+#import "LVCConstantsManager.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -73,8 +74,7 @@
 
 /// @return RACSignal Next: (NSArray<NSDictionary *> *)loansArray.
 - (RACSignal *)_downloadLoans {
-#warning Externalize path
-    NSString *path = @"v1/loans/search.json";
+    NSString *path = [LVCConstantsManager APIPathLoansSearch];
     NSDictionary *params = @{@"status": @"fundraising"};
     
     return [[[[self.networkProxy performRequestWithMethod:LVCNetworkProxyHTTPMethodGET onRESTPath:path withParams:params]

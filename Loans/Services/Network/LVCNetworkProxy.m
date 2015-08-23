@@ -7,6 +7,7 @@
 //
 
 #import "LVCNetworkProxy.h"
+#import "LVCConstantsManager.h"
 
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
@@ -116,8 +117,7 @@ NSString *NSStringFromLVCNetworkProxyHTTPMethod(LVCNetworkProxyHTTPMethod method
 }
 
 - (void)_initSessionManager {
-#warning Externalize URL
-    NSURL *url = [NSURL URLWithString:@"http://api.kivaws.org/"];
+    NSURL *url = [NSURL URLWithString:[LVCConstantsManager APIEndPoint]];
     self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:url];
 }
 
@@ -135,7 +135,7 @@ NSString *NSStringFromLVCNetworkProxyHTTPMethod(LVCNetworkProxyHTTPMethod method
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
         if (response.statusCode == 200 && responseObject && [responseObject isKindOfClass:NSDictionary.class]) {
             NSDictionary *json = responseObject;
-//            NSLog(@"%@: %@ | Params: %@. JSON received: %@", NSStringFromLVCNetworkProxyHTTPMethod(HTTPMethod), path, params, json);
+            NSLog(@"%@: %@ | Params: %@. JSON received: %@", NSStringFromLVCNetworkProxyHTTPMethod(HTTPMethod), path, params, json);
             [subscriber sendNext:json];
             [subscriber sendCompleted];
         } else {
